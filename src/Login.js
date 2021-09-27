@@ -1,5 +1,7 @@
 import './Login.css';
 import React from 'react';
+import {Button} from '@mui/material';
+
 
 function Login() {
     return (
@@ -13,6 +15,7 @@ function Login() {
                 <input type="password" id="passwordInput"/>
             </div>
             <input type="submit" value="Log In"/>
+            <Button variant="outlined">Primary</Button>
         </form>
     );
 

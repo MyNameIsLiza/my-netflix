@@ -1,0 +1,18 @@
+.Users {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.User {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+    flex-basis: 15%;
+}
+
+.User img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
