@@ -1,60 +1,40 @@
 import React, {useState} from 'react';
 import './App.css';
-import Login from './Login';
-import Users from './Users';
-import firebase from 'firebase/app';
-import 'firebase/auth';
-
-import firebaseConfig from './firebaseConfig';
-firebase.initializeApp(firebaseConfig);
-const authProvider = new firebase.auth.GoogleAuthProvider();
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import LoginIcon from '@mui/icons-material/Login';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import PersonPinIcon from '@mui/icons-material/PersonPin';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import HomeIcon from '@mui/icons-material/Home';
+import {BrowserRouter as Router, Link, Route, Switch} from "react-router-dom";
+import Users from "./Users";
+import Login from "./Login";
 
 function App() {
-    const [user, setUser] = useState(null);
+    const [value, setValue] = React.useState(0);
 
-    const signInWithGoogle = () => {
-        firebase
-            .auth()
-            .signInWithPopup(authProvider)
-            .then(function(result) {
-                console.log(result.credential.accessToken);
-                setUser(result.user);
-            })
-            .catch(error => {
-                console.error({
-                    ...error
-                });
-            });
-    };
-
-    const signOut = () => {
-        firebase
-            .auth()
-            .signOut()
-            .then(() => {
-                setUser(null);
-            })
-            .catch(error => {
-                console.error({
-                    ...error
-                });
-            });
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
     };
 
     return (
-        <div className="App">
-            <header className="App-header">
-                <h1>Hello CodeSandbox</h1>
-                <h2>Start editing to see some magic happen!</h2>
-                {user ? <p>Hello, {user.displayName}</p> : <p>Please sign in.</p>}
-                {user ? (
-                    <button onClick={signOut}>Sign out</button>
-                ) : (
-                    <button onClick={signInWithGoogle}>Sign in with Google</button>
-                )}
-            </header>
+        <div className="App"><Router>
+            <div className="App-header">
+                <Tabs value={value} onChange={handleChange} aria-label="icon tabs example">
+                    <Tab icon={<HomeIcon/>} label="HOME" to="/" component={Link}/>
+                    <Tab icon={<LoginIcon/>} label="LOGIN" to="/login" component={Link}/>
+                    <Tab icon={<PersonPinIcon/>} label="USERS" to="/users" component={Link}/>
+                </Tabs>
+            </div>
+            <Switch>
+                <Route exact path="/" component={Users}/>
+                <Route path="/login" component={Login}/>
+                <Route path="/users" component={Users}/>
+            </Switch>
+        </Router>
         </div>
-    );
+    )
 }
 
 export default App;

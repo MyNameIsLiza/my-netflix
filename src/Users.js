@@ -2,7 +2,7 @@ import './Users.css';
 import React, {useState, useEffect} from 'react';
 
 function Users() {
-    const [users, setUsers] = useState(0);
+    const [users, setUsers] = useState(null);
     useEffect(() => {
         fetch('https://api.tvmaze.com/people')
             .then((response) => {
