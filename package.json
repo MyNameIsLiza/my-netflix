@@ -1,11 +1,12 @@
 {
-  "name": "my-netflix",
+  "name": "my-netflix-liza",
   "version": "1.0.0",
   "description": "",
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
-
+    "@emotion/react": "^11.4.1",
+    "@emotion/styled": "^11.3.0",
     "@mui/icons-material": "^5.0.1",
     "@mui/material": "^5.0.1",
     "@mui/styled-engine": "^5.0.1",
