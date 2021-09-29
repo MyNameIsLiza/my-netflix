@@ -1,0 +1,18 @@
+.Movies {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.Movie {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem;
+    flex-basis: 15%;
+}
+
+.Movie img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}

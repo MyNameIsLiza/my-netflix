@@ -1,42 +1,11 @@
 //import './Login.css';
 import React, {useState} from 'react';
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import firebaseConfig from './firebaseConfig';
-firebase.initializeApp(firebaseConfig);
-const authProvider = new firebase.auth.GoogleAuthProvider();
+import {signOut, signInWithGoogle} from './signInOut';
 
-function Login() {
-    const [user, setUser] = useState(null);
 
-    const signInWithGoogle = () => {
-        firebase
-            .auth()
-            .signInWithPopup(authProvider)
-            .then(function(result) {
-                console.log(result.credential.accessToken);
-                setUser(result.user);
-            })
-            .catch(error => {
-                console.error({
-                    ...error
-                });
-            });
-    };
+export default function Login() {
+    const [user, setUser] = useState(setUser);
 
-    const signOut = () => {
-        firebase
-            .auth()
-            .signOut()
-            .then(() => {
-                setUser(null);
-            })
-            .catch(error => {
-                console.error({
-                    ...error
-                });
-            });
-    };
     return (
         <div className="Login">
             <h1>Hello CodeSandbox</h1>
@@ -49,7 +18,8 @@ function Login() {
             )}
         </div>
     );
-
 }
 
-export default Login;
+/*Login.propTypes = {
+    setToken: PropTypes.func.isRequired
+};*/

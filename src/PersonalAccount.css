@@ -1,0 +1,9 @@
+.PersonalAccount {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.signOutButton {
+    margin: 1rem!important;
+}
