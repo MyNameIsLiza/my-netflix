@@ -3,20 +3,43 @@ import React, {useState, useEffect} from 'react';
 
 function Movies() {
     const [movies, setMovies] = useState(null);
-    let api = 'https://api.tvmaze.com/shows';
+    const [api, setApi] = useState('https://api.tvmaze.com/shows');
     const fetchMovies = async (start, end) => {
         const response = await fetch(api);
         const result = await response.json();
         setMovies(result.slice(start, end).map((movie) =>
-            <Movie key={movie.id} {...movie}/>
+        {
+            if(movie.show){
+                movie = movie.show;
+            }
+            return <Movie key={movie.id} {...movie}/>
+        }
+
         ));
+        console.log(result);
     }
 
     useEffect(() => {
         fetchMovies(0, 24);
     }, [api]);
+
+    function searchByName() {
+        const input = document.getElementById('nameInput');
+        let name = input.value;
+        console.log('input', input);
+        console.log(`https://api.tvmaze.com/search/shows?q=${name}`);
+        setApi(`https://api.tvmaze.com/search/shows?q=${name}`);
+    }
+
     return (
-        <ul className="Movies">{movies}</ul>
+        <div className="Movies">
+            <ul className="MoviesUl">{movies}</ul>
+            <div className="search">
+                <label htmlFor="nameInput">Search by name</label>
+                <input type="text" id="nameInput" onChange={searchByName}/>
+            </div>
+        </div>
+
     );
 }
 

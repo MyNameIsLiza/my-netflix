@@ -1,4 +1,9 @@
 .Movies {
+    display: flex;
+}
+
+.MoviesUl {
+    flex-basis: 80%;
     list-style: none;
     display: flex;
     flex-wrap: wrap;
@@ -11,7 +16,7 @@
     flex-basis: 15%;
 }
 
-.Movie img{
+.Movie img {
     height: 100%;
     width: 100%;
     object-fit: cover;
