@@ -1,5 +1,6 @@
 import './Movies.css';
 import React, {useState, useEffect} from 'react';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 function Movies() {
     const [movies, setMovies] = useState(null);
@@ -11,7 +12,7 @@ function Movies() {
                 if (movie.show) {
                     movie = movie.show;
                 }
-                return <Movie key={movie.id} {...movie}/>
+                return <Movie key={movie.id} {...movie}/>;
             }
         ));
         console.log(result);
@@ -42,8 +43,22 @@ function Movies() {
 }
 
 function Movie(props) {
+
+    function favoriteClick({target}) {
+        const svg = target.closest('svg');
+        if(svg.classList.contains('favorite')){
+            svg.classList.remove('favorite');
+        }else{
+            svg.classList.add('favorite');
+        }
+    }
+
     return (
-        <li className="Movie"><h3>{props.name}</h3>
+        <li className="Movie" data-id={props.id}>
+            <div className="movieHeader">
+                <h3>{props.name}</h3>
+                <FavoriteIcon onClick={favoriteClick}/>
+            </div>
             {props.image?.medium ? <img src={props.image?.medium} alt="movie photo"/> :
                 <img
                     src="https://i.pinimg.com/474x/be/c1/de/bec1dee0a4484297fc3322e229c6f123.jpg"

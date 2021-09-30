@@ -21,7 +21,23 @@
     width: 100%;
     object-fit: cover;
 }
+
 .Movie .no-img {
     opacity: 50%;
     object-fit: scale-down;
+}
+
+.movieHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.movieHeader svg {
+    fill: blueviolet;
+}
+
+.favorite {
+    fill: hotpink!important;
 }
