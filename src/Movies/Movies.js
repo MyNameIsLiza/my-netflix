@@ -1,38 +1,29 @@
 import './Movies.css';
 import React, {useState, useEffect} from 'react';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import {fetchMovies} from '../api';
 
 function Movies() {
-    const [movies, setMovies] = useState(null);
-    const [api, setApi] = useState('https://api.tvmaze.com/shows');
-    const fetchMovies = async (start, end) => {
-        const response = await fetch(api);
-        const result = await response.json();
-        setMovies(result.slice(start, end).map((movie) => {
-                if (movie.show) {
-                    movie = movie.show;
-                }
-                return <Movie key={movie.id} {...movie}/>;
-            }
-        ));
-        console.log(result);
-    }
+    const [movies, setMovies] = useState([]);
 
-    useEffect(() => {
-        fetchMovies(0, 24);
-    }, [api]);
 
-    function searchByName() {
-        const input = document.getElementById('nameInput');
-        let name = input.value;
-        console.log('input', input);
-        console.log(`https://api.tvmaze.com/search/shows?q=${name}`);
-        setApi(`https://api.tvmaze.com/search/shows?q=${name}`);
+    useEffect(async () => {
+        setMovies(await fetchMovies(0, 24));
+    }, [fetchMovies, setMovies]);
+
+    async function searchByName({target}) {
+        if(target.value){
+            const result = await fetchMovies(0, 24, target.value);
+            setMovies(result.map((item)=>item.show));
+        }else{
+            const result = await fetchMovies(0, 24);
+            setMovies(result);
+        }
     }
 
     return (
         <div className="Movies">
-            <ul className="MoviesUl">{movies}</ul>
+            <ul className="MoviesUl">{movies.map((item) => (<Movie key={item.id} {...item}/>))}</ul>
             <div className="search">
                 <label htmlFor="nameInput">Search by name</label>
                 <input type="text" id="nameInput" onChange={searchByName}/>
@@ -43,12 +34,11 @@ function Movies() {
 }
 
 function Movie(props) {
-
     function favoriteClick({target}) {
         const svg = target.closest('svg');
-        if(svg.classList.contains('favorite')){
+        if (svg.classList.contains('favorite')) {
             svg.classList.remove('favorite');
-        }else{
+        } else {
             svg.classList.add('favorite');
         }
     }
