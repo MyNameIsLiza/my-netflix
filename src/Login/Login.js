@@ -1,4 +1,4 @@
-import {signInWithGoogle} from '../signInOut';
+import {signInWithGoogle} from '../authentication';
 
 export default function Login() {
     return (

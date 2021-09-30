@@ -14,9 +14,12 @@ import Users from "../Users/Users";
 import Login from "../Login/Login";
 import Movies from "../Movies/Movies";
 import PersonalAccount from "../PersonalAccount/PersonalAccount";
+
 import firebaseConfig from "../firebaseConfig";
 
-firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
 
 function setToken(userToken) {
     sessionStorage.setItem('token', JSON.stringify(userToken));
@@ -35,15 +38,30 @@ function getUser() {
     return JSON.parse(userString);
 }
 
+function getInitialValue() {
+    switch (location.pathname) {
+        case '/':
+            return 0;
+        case '/login':
+            return 1;
+        case '/personal_account':
+            return 1;
+        case '/users':
+            return 2;
+        case '/movies':
+            return 3;
+    }
+}
+
 function App() {
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = React.useState(getInitialValue());
 
     const handleChange = useCallback((value, newValue) => {
         setValue(newValue);
-    }, []);
 
+    }, []);
     useEffect(() => {
-        console.log('database', firebase.database());
+
 
     }, [firebase]);
     let token = getToken();

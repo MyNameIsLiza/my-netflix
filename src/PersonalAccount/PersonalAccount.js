@@ -1,15 +1,9 @@
 import './PersonalAccount.css';
 import React, {useState, useEffect, useCallback} from 'react';
-import {signOut, signInWithGoogle} from '../signInOut';
+import {signOut, getUser} from '../authentication';
 import Button from '@mui/material/Button';
-import { useHistory } from "react-router-dom";
 
 function PersonalAccount() {
-let history = useHistory();
-    function getUser() {
-        const userString = sessionStorage.getItem('user');
-        return JSON.parse(userString);
-    }
 
     const handleSignOut = useCallback(async()=>{
         await signOut();

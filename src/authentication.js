@@ -1,14 +1,13 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import firebaseConfig from './firebaseConfig';
-firebase.initializeApp(firebaseConfig);
+
 const authProvider = new firebase.auth.GoogleAuthProvider();
 
 export const signInWithGoogle = () => {
     firebase
         .auth()
         .signInWithPopup(authProvider)
-        .then(function(result) {
+        .then(function (result) {
             console.log(result.credential.accessToken);
             sessionStorage.setItem('token', result.credential.accessToken);
             sessionStorage.setItem('user', JSON.stringify(result.user));
@@ -33,4 +32,9 @@ export const signOut = () => {
                 ...error
             });
         });
-};
+}
+
+export function getUser() {
+    const userString = sessionStorage.getItem('user');
+    return JSON.parse(userString);
+}
