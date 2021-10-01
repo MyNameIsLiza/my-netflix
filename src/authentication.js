@@ -12,8 +12,8 @@ export const signInWithGoogle = (onReRender = () => {
             sessionStorage.setItem('token', result.credential.accessToken);
             sessionStorage.setItem('user', JSON.stringify(result.user));
             firebase.database().ref(`${getUser().uid}`).on('value', (elem) => {
-                if (!elem.val() || !elem.val().img) {
-                    const o = {...elem.val(), 'img': getUser().photoURL};
+                if (!elem.val() || !elem.val().img || !elem.val().name) {
+                    const o = {...elem.val(), 'name':getUser().displayName, 'img': getUser().photoURL};
                     firebase.database().ref(`${getUser().uid}`).set(o);
                 }
             });

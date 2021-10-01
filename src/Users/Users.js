@@ -60,7 +60,7 @@ function Users() {
                 });
         }
 
-        setUsers(await fetchUsers(0, 24));
+        setUsers(await fetchUsers());
     }, [fetchUsers, setUsers, getUser]);
 
     const searchByName = useCallback(
@@ -69,7 +69,7 @@ function Users() {
                 const result = await fetchUsers(target.value);
                 setUsers(result.map((item) => item.person));
             } else {
-                const result = await fetchUsers(0, 24);
+                const result = await fetchUsers();
                 setUsers(result);
             }
         }, []);
