@@ -1,13 +1,13 @@
 import './PersonalAccount.css';
 import React, {useState, useEffect, useCallback} from 'react';
-import {signOut, getUser} from '../authentication';
+import {signOut, getUser, signInWithGoogle} from '../authentication';
 import Button from '@mui/material/Button';
 
-function PersonalAccount() {
-
-    const handleSignOut = useCallback(async()=>{
-        await signOut();
-    }, [signOut])
+function PersonalAccount({onReRender} = () => {
+}) {
+    const handleSignOut = () => {
+        signOut(onReRender);
+    };
 
     return (
         <div className="PersonalAccount">

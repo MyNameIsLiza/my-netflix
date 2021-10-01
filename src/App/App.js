@@ -55,15 +55,18 @@ function getInitialValue() {
 
 function App() {
     const [value, setValue] = React.useState(getInitialValue());
+    const [reRender, setReRender] = useState(false);
+
+    const handleReRender = () => {
+        setReRender(!reRender);
+    }
+
 
     const handleChange = useCallback((value, newValue) => {
         setValue(newValue);
 
     }, []);
-    useEffect(() => {
 
-
-    }, [firebase]);
     let token = getToken();
 
     return (
@@ -82,8 +85,8 @@ function App() {
             </div>
             <Switch>
                 <Route exact path="/" component={Home}/>
-                {!token ? <Route path="/login" component={Login}/> :
-                    <Route path="/personal_account" component={PersonalAccount}/>}
+                {!token ? <Route path="/login" children={()=><Login onReRender={handleReRender}/>}/> :
+                    <Route path="/personal_account" children={()=><PersonalAccount onReRender={handleReRender}/>}/>}
                 <Route path="/users" component={Users}/>
                 <Route path="/movies" component={Movies}/>
             </Switch>
