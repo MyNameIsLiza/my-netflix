@@ -65,23 +65,36 @@ function Movies() {
                 });
         }
 
-        setMovies(await fetchMovies(0, 24));
+        setMovies(await fetchMovies());
     }, [fetchMovies, setMovies, getUser]);
 
     const searchByName = useCallback(
         async ({target}) => {
             if (target.value) {
-                const result = await fetchMovies(0, 24, target.value);
+                const result = await fetchMovies(target.value);
                 setMovies(result.map((item) => item.show));
             } else {
-                const result = await fetchMovies(0, 24);
+                const result = await fetchMovies();
+                setMovies(result);
+            }
+        }, []);
+
+    const filterByGenre = useCallback(
+        async ({target}) => {
+            if (target.value) {
+                const all = await fetchMovies();
+                const result = all.filter(item => item.genres.indexOf(target.value) !== -1);
+                console.log(result);
+                setMovies(result);
+            } else {
+                const result = await fetchMovies();
                 setMovies(result);
             }
         }, []);
 
     return (
         <div className="Movies">
-            <ul className="MoviesUl">{movies.map((item) => {
+            <ul className="MoviesUl">{movies.length !== 0 ? movies.slice(0, 24).map((item) => {
                 let isFavorite;
                 for (let key in favorites) {
                     if (+favorites[key] === item.id) {
@@ -93,12 +106,21 @@ function Movies() {
                 } else {
                     return (<Movie key={item.id} {...item}/>);
                 }
-            })}
+            }) : <h2>Nothing yet</h2>}
             </ul>
-            <div className="search">
-                <label htmlFor="nameInput">Search by name</label>
-                <input type="text" id="nameInput" onChange={searchByName}/>
-            </div>
+            <aside>
+                <div className="search">
+                    <h3>Search</h3>
+                    <label htmlFor="nameInput">By name</label>
+                    <input type="text" id="nameInput" onChange={searchByName}/>
+                </div>
+                <div className="filter">
+                    <h3>Filter</h3>
+                    <label htmlFor="nameInput">By Genre</label>
+                    <input type="text" id="genreInput" onChange={filterByGenre}/>
+                </div>
+            </aside>
+
         </div>
 
     );

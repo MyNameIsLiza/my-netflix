@@ -79,7 +79,7 @@ function Users() {
     return (
         <div className="Users">
             <ul className="UsersUl">
-                {users.map((item) => {
+                {users.slice(0, 24).map((item) => {
                     let isFriend;
                     for (let key in friends) {
                         if (+friends[key] === item.id) {
