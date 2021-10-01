@@ -1,5 +1,4 @@
 import {signInWithGoogle} from '../authentication';
-import {useCallback} from "react";
 
 export default function Login({onReRender} = () => {
 }) {

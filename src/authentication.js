@@ -3,13 +3,20 @@ import 'firebase/auth';
 
 const authProvider = new firebase.auth.GoogleAuthProvider();
 
-export const signInWithGoogle = (onReRender = ()=>{}) => {
+export const signInWithGoogle = (onReRender = () => {
+}) => {
     firebase
         .auth()
         .signInWithPopup(authProvider)
         .then(function (result) {
             sessionStorage.setItem('token', result.credential.accessToken);
             sessionStorage.setItem('user', JSON.stringify(result.user));
+            firebase.database().ref(`${getUser().uid}`).on('value', (elem) => {
+                if (!elem.val() || !elem.val().img) {
+                    const o = {...elem.val(), 'img': getUser().photoURL};
+                    firebase.database().ref(`${getUser().uid}`).set(o);
+                }
+            });
             onReRender();
             location.pathname = '/personal_account';
         })
@@ -20,7 +27,8 @@ export const signInWithGoogle = (onReRender = ()=>{}) => {
         });
 };
 
-export const signOut = (onReRender = ()=>{}) => {
+export const signOut = (onReRender = () => {
+}) => {
     firebase
         .auth()
         .signOut()
