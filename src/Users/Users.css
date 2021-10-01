@@ -1,4 +1,9 @@
 .Users {
+    display: flex;
+}
+
+.UsersUl {
+    flex-basis: 80%;
     list-style: none;
     display: flex;
     flex-wrap: wrap;
@@ -11,8 +16,28 @@
     flex-basis: 15%;
 }
 
+.userHeader{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
 .User img{
     height: 100%;
     width: 100%;
     object-fit: cover;
+}
+
+.userHeader svg {
+    fill: blueviolet;
+}
+
+.search {
+    display: flex;
+    flex-direction: column;
+}
+
+.friend {
+    fill: cornflowerblue !important;
 }

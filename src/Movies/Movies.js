@@ -68,15 +68,16 @@ function Movies() {
         setMovies(await fetchMovies(0, 24));
     }, [fetchMovies, setMovies, getUser]);
 
-    async function searchByName({target}) {
-        if (target.value) {
-            const result = await fetchMovies(0, 24, target.value);
-            setMovies(result.map((item) => item.show));
-        } else {
-            const result = await fetchMovies(0, 24);
-            setMovies(result);
-        }
-    }
+    const searchByName = useCallback(
+        async ({target}) => {
+            if (target.value) {
+                const result = await fetchMovies(0, 24, target.value);
+                setMovies(result.map((item) => item.show));
+            } else {
+                const result = await fetchMovies(0, 24);
+                setMovies(result);
+            }
+        }, []);
 
     return (
         <div className="Movies">
@@ -120,7 +121,7 @@ function Movie(props) {
         <li className="Movie" data-id={props.id}>
             <div className="movieHeader">
                 <h3>{props.name}</h3>
-                <FavoriteIcon className={props.className} onClick={favoriteClick}/>
+                {getUser() ? <FavoriteIcon className={props.className} onClick={favoriteClick}/> : ''}
             </div>
             {props.image?.medium ? <img src={props.image?.medium} alt="movie photo"/> :
                 <img

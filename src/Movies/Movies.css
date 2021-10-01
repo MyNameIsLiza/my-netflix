@@ -38,6 +38,11 @@
     fill: blueviolet;
 }
 
+.search {
+    display: flex;
+    flex-direction: column;
+}
+
 .favorite {
-    fill: hotpink!important;
+    fill: hotpink !important;
 }
