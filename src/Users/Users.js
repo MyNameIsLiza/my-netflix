@@ -11,7 +11,6 @@ function addFriend(id) {
         if (elem.val()) {
             newId = elem.val();
         } else {
-            console.log('O');
             newId = 0;
         }
     });

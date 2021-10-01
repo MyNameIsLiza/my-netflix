@@ -11,7 +11,6 @@ function addFavourite(id) {
         if (elem.val()) {
             newId = elem.val();
         } else {
-            console.log('O');
             newId = 0;
         }
     });
@@ -22,10 +21,6 @@ function addFavourite(id) {
     f[newId] = id;
     f['newId'] = ++newId;
     firebase.database().ref(`${getUser().uid}/favorites`).set(f);
-
-
-    console.log('newId', newId);
-    /*firebase.database().ref(`${getUser().uid}/favorites/${props.id}`).push(true);*/
 }
 
 function removeFavourite(id) {
@@ -84,7 +79,6 @@ function Movies() {
             if (target.value) {
                 const all = await fetchMovies();
                 const result = all.filter(item => item.genres.indexOf(target.value) !== -1);
-                console.log(result);
                 setMovies(result);
             } else {
                 const result = await fetchMovies();
@@ -109,15 +103,17 @@ function Movies() {
             }) : <h2>Nothing yet</h2>}
             </ul>
             <aside>
-                <div className="search">
-                    <h3>Search</h3>
-                    <label htmlFor="nameInput">By name</label>
-                    <input type="text" id="nameInput" onChange={searchByName}/>
-                </div>
-                <div className="filter">
-                    <h3>Filter</h3>
-                    <label htmlFor="nameInput">By Genre</label>
-                    <input type="text" id="genreInput" onChange={filterByGenre}/>
+                <div className="aside-content">
+                    <div className="search">
+                        <h3>Search</h3>
+                        <label htmlFor="nameInput">By name</label>
+                        <input type="text" id="nameInput" onChange={searchByName}/>
+                    </div>
+                    <div className="filter">
+                        <h3>Filter</h3>
+                        <label htmlFor="nameInput">By Genre</label>
+                        <input type="text" id="genreInput" onChange={filterByGenre}/>
+                    </div>
                 </div>
             </aside>
 

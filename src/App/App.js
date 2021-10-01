@@ -14,28 +14,12 @@ import Users from "../Users/Users";
 import Login from "../Login/Login";
 import Movies from "../Movies/Movies";
 import PersonalAccount from "../PersonalAccount/PersonalAccount";
+import {getToken, getUser} from "../authentication";
 
 import firebaseConfig from "../firebaseConfig";
 
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
-}
-
-function setToken(userToken) {
-    sessionStorage.setItem('token', JSON.stringify(userToken));
-}
-
-function setUser(user) {
-    sessionStorage.setItem('user', JSON.stringify(user));
-}
-
-function getToken() {
-    return sessionStorage.getItem('token');
-}
-
-function getUser() {
-    const userString = sessionStorage.getItem('user');
-    return JSON.parse(userString);
 }
 
 function getInitialValue() {

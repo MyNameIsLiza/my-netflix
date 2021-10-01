@@ -8,7 +8,6 @@ export const signInWithGoogle = (onReRender = ()=>{}) => {
         .auth()
         .signInWithPopup(authProvider)
         .then(function (result) {
-            console.log(result.credential.accessToken);
             sessionStorage.setItem('token', result.credential.accessToken);
             sessionStorage.setItem('user', JSON.stringify(result.user));
             onReRender();
@@ -36,6 +35,14 @@ export const signOut = (onReRender = ()=>{}) => {
                 ...error
             });
         });
+}
+
+export function setUser(user) {
+    sessionStorage.setItem('user', JSON.stringify(user));
+}
+
+export function getToken() {
+    return sessionStorage.getItem('token');
 }
 
 export function getUser() {
