@@ -49,6 +49,7 @@ function Movies() {
     const [favorites, setFavorites] = useState([]);
 
     useEffect(async () => {
+        console.log('Movies')
         if (getUser()) {
             firebase.database().ref(`${getUser().uid}/favorites`)
                 .on('value', (elem) => {
@@ -59,7 +60,6 @@ function Movies() {
                     }
                 });
         }
-
         setMovies(await fetchMovies());
     }, [fetchMovies, setMovies, getUser]);
 

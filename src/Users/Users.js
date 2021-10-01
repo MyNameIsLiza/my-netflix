@@ -2,7 +2,7 @@ import './Users.css';
 import React, {useState, useEffect, useCallback} from 'react';
 import {getUser} from "../authentication";
 import PersonIcon from '@mui/icons-material/Person';
-import {fetchUsers} from "../api";
+//import {fetchUsers} from "../api";
 import firebase from "firebase";
 
 function addFriend(id) {
@@ -44,11 +44,39 @@ function removeFriend(id) {
     }
 }
 
+const fetchUsers = async (name) => {
+    if (name) {
+        const result = (await getUsers()).specialUsers;
+        return (await getUsers()).specialUsers;
+    } else {
+        return (await getUsers()).users;
+    }
+}
+
+async function getUsers(name) {
+    let all = [];
+    let users = [];
+    let specialUsers = [];
+    firebase.database().ref()
+        .on('value', (elem) => {
+        all = elem.val();
+    });
+    for (const key in all) {
+        users.push({'id': key, ...all[key]});
+        if (name && all[key].name === name) {
+            specialUsers.push({'id': key, ...all[key]});
+        }
+    }
+    return {users, specialUsers}
+}
+
+
 function Users() {
     const [users, setUsers] = useState([]);
     const [friends, setFriends] = useState([]);
 
-    useEffect(async () => {
+    useEffect( async () => {
+        console.log('Users')
         if (getUser()) {
             firebase.database().ref(`${getUser().uid}/friends`)
                 .on('value', (elem) => {
@@ -59,7 +87,6 @@ function Users() {
                     }
                 });
         }
-
         setUsers(await fetchUsers());
     }, [fetchUsers, setUsers, getUser]);
 
@@ -78,6 +105,7 @@ function Users() {
         <div className="Users">
             <ul className="UsersUl">
                 {users.slice(0, 24).map((item) => {
+
                     let isFriend;
                     for (let key in friends) {
                         if (+friends[key] === item.id) {
@@ -119,7 +147,7 @@ function User(props) {
                     getUser() ? <PersonIcon className={props.className} onClick={friendClick}/> : ''
                 }
             </div>
-            {props.image?.medium ? <img src={props.image?.medium} alt="user photo"/> :
+            {props.img ? <img src={props.img} alt="user photo"/> :
                 <img
                     src="https://st3.depositphotos.com/9998432/19048/v/600/depositphotos_190484900-stock-illustration-default-placeholder-businessman-half-length.jpg"
                     alt="no photo"/>}

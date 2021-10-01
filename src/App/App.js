@@ -45,7 +45,6 @@ function App() {
         setReRender(!reRender);
     }
 
-
     const handleChange = useCallback((value, newValue) => {
         setValue(newValue);
 
@@ -53,8 +52,9 @@ function App() {
 
     let token = getToken();
 
-    return (
-        <div className="App"><Router>
+
+
+    return (<div className="App"><Router>
             <div className="App-header">
                 <Tabs value={value} onChange={handleChange} aria-label="icon tabs example">
                     <Tab icon={<HomeIcon className="navIcon"/>} label="HOME" to="/" component={Link}/>
@@ -69,8 +69,8 @@ function App() {
             </div>
             <Switch>
                 <Route exact path="/" component={Home}/>
-                {!token ? <Route path="/login" children={()=><Login onReRender={handleReRender}/>}/> :
-                    <Route path="/personal_account" children={()=><PersonalAccount onReRender={handleReRender}/>}/>}
+                {!token ? <Route path="/login" children={() => <Login onReRender={handleReRender}/>}/> :
+                    <Route path="/personal_account" children={() => <PersonalAccount onReRender={handleReRender}/>}/>}
                 <Route path="/users" component={Users}/>
                 <Route path="/movies" component={Movies}/>
             </Switch>
