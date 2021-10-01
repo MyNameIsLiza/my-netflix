@@ -8,7 +8,7 @@ export const fetchMovies = async (name) => {
     }
 }
 
-export const fetchUsers = async () => {
+export const fetchUsers = async (name) => {
     if(name){
         const response = await fetch(`https://api.tvmaze.com/search/people?q=${name}`);
         return await response.json();

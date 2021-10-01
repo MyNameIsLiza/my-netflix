@@ -67,8 +67,7 @@ function Users() {
     const searchByName = useCallback(
         async ({target}) => {
             if (target.value) {
-                const result = await fetchUsers(0, 24, target.value);
-                console.log(result)
+                const result = await fetchUsers(target.value);
                 setUsers(result.map((item) => item.person));
             } else {
                 const result = await fetchUsers(0, 24);

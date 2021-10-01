@@ -2,6 +2,13 @@
     display: flex;
 }
 
+@media screen and (max-width: 700px) {
+    .Users {
+        flex-direction: column-reverse;
+        align-items: center;
+    }
+}
+
 .UsersUl {
     flex-basis: 80%;
     list-style: none;
@@ -13,7 +20,7 @@
     display: flex;
     flex-direction: column;
     padding: 0.5rem;
-    flex-basis: 15%;
+    flex-basis: 20%;
 }
 
 .userHeader{
