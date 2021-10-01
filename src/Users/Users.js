@@ -82,7 +82,7 @@ function Users() {
                 {users.slice(0, 24).map((item) => {
                     let isFriend;
                     for (let key in friends) {
-                        if (+friends[key] === item.id) {
+                        if (friends[key] === item.id) {
                             isFriend = true;
                         }
                     }
