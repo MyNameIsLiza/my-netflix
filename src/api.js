@@ -10,38 +10,25 @@ export const fetchMovies = async (name) => {
     }
 }
 
-export const fetchUsers = async (name) => {
-    /*if (name) {
-        const response = await fetch(`https://api.tvmaze.com/search/people?q=${name}`);
-        return await response.json();
-    } else {
-        const response = await fetch('https://api.tvmaze.com/people');
-        return await response.json();
-    }*/
-    if (name) {
-        const result = (await getUsers()).specialUsers;
-        return result;
-    } else {
-        const result = (await getUsers()).users;
-        return result;
-    }
-}
+export const fetchUsers = async (setUsers, name) => {
 
-async function getUsers(name) {
-    let all = [];
-    let users = [];
-    let specialUsers = [];
-    await (()=>{firebase.database().ref().on('value', (elem) => {
-        all = elem.val();
-        console.log('TTTTTTTT');
-    })})();
-    console.log('ALL', all);
-    for (const key in all) {
-        console.log('key', key);
-        users.push({'id': key, ...all[key]});
-        if (name && all[key].name === name) {
-            specialUsers.push({'id': key, ...all[key]});
+    const eventref = firebase.database().ref();
+    const snapshot = await eventref.once('value');
+    const value = snapshot.val();
+
+    let users = []
+    let specialUsers = []
+
+    for (const key in value) {
+        users.push({'id': key, ...value[key]});
+        if (name && value[key].name.startsWith(name)) {
+            specialUsers.push({'id': key, ...value[key]});
         }
     }
-    return {users, specialUsers}
+    if (name) {
+        setUsers(specialUsers);
+    } else {
+        setUsers(users);
+    }
+    return snapshot;
 }

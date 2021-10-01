@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import firebase from 'firebase';
 import './App.css';
 import Tabs from '@mui/material/Tabs';
@@ -51,8 +51,6 @@ function App() {
     }, []);
 
     let token = getToken();
-
-
 
     return (<div className="App"><Router>
             <div className="App-header">

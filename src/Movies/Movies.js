@@ -34,7 +34,7 @@ function removeFavourite(id) {
                 }
             }
         )
-    for (let key in favorites) {
+    for (let key of favorites) {
         if (+favorites[key] === +id) {
             index = key;
         }
@@ -49,7 +49,6 @@ function Movies() {
     const [favorites, setFavorites] = useState([]);
 
     useEffect(async () => {
-        console.log('Movies')
         if (getUser()) {
             firebase.database().ref(`${getUser().uid}/favorites`)
                 .on('value', (elem) => {
@@ -78,7 +77,7 @@ function Movies() {
         async ({target}) => {
             if (target.value) {
                 const all = await fetchMovies();
-                const result = all.filter(item => item.genres.indexOf(target.value) !== -1);
+                const result = all.filter(item => item.genres.filter((genre)=>genre.startsWith(target.value)).length !== 0);
                 setMovies(result);
             } else {
                 const result = await fetchMovies();
@@ -139,7 +138,9 @@ function Movie(props) {
         <li className="Movie" data-id={props.id}>
             <div className="movieHeader">
                 <h3>{props.name}</h3>
-                {getUser() ? <FavoriteIcon className={props.className} onClick={favoriteClick}/> : ''}
+                {
+                    getUser() ? <FavoriteIcon className={props.className} onClick={favoriteClick}/> : ''
+                }
             </div>
             {props.image?.medium ? <img src={props.image?.medium} alt="movie photo"/> :
                 <img
