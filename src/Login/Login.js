@@ -1,10 +1,11 @@
-import React from 'react'
-import { signInWithGoogle } from '../authentication'
+import React from 'react';
+import { signInWithGoogle } from '../authentication';
+import PropTypes from "prop-types";
 
-export default function Login({ onReRender } = () => {}) {
+function Login({ onReRender } = () => {}) {
   const handleSignIn = () => {
-    signInWithGoogle(onReRender)
-  }
+    signInWithGoogle(onReRender);
+  };
 
   return (
     <div className="Login">
@@ -14,5 +15,11 @@ export default function Login({ onReRender } = () => {}) {
         Sign in with Google
       </button>
     </div>
-  )
+  );
 }
+
+Login.propTypes = {
+    onReRender: PropTypes.func
+};
+
+export default Login;

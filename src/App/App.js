@@ -1,25 +1,27 @@
-import React, { useCallback, useState } from 'react'
-import firebase from 'firebase'
-import './App.css'
-import Tabs from '@mui/material/Tabs'
-import Tab from '@mui/material/Tab'
-import LoginIcon from '@mui/icons-material/Login'
-import PersonPinIcon from '@mui/icons-material/PersonPin'
-import HomeIcon from '@mui/icons-material/Home'
-import MovieIcon from '@mui/icons-material/Movie'
-import Avatar from '@mui/material/Avatar'
-import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom'
-import Home from '../Home'
-import Users from '../Users/Users'
-import Login from '../Login/Login'
-import Movies from '../Movies/Movies'
-import PersonalAccount from '../PersonalAccount/PersonalAccount'
-import { getToken, getUser } from '../authentication'
+import React, { useCallback, useState } from 'react';
+import firebase from 'firebase';
+import './App.css';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import LoginIcon from '@mui/icons-material/Login';
+import PersonPinIcon from '@mui/icons-material/PersonPin';
+import HomeIcon from '@mui/icons-material/Home';
+import MovieIcon from '@mui/icons-material/Movie';
+import Avatar from '@mui/material/Avatar';
+import {
+  BrowserRouter as Router, Link, Route, Switch,
+} from 'react-router-dom';
+import Home from '../Home';
+import Users from '../Users/Users';
+import Login from '../Login/Login';
+import Movies from '../Movies/Movies';
+import PersonalAccount from '../PersonalAccount/PersonalAccount';
+import { getToken, getUser } from '../authentication';
 
-import firebaseConfig from '../firebaseConfig'
+import firebaseConfig from '../firebaseConfig';
 
 if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig)
+  firebase.initializeApp(firebaseConfig);
 }
 
 const initialValue = {
@@ -28,23 +30,23 @@ const initialValue = {
   '/personal_account': 1,
   '/users': 2,
   '/movies': 3,
-}
+};
 
 function App() {
   const [value, setValue] = React.useState(
     initialValue[window.location.pathname],
-  )
-  const [reRender, setReRender] = useState(false)
+  );
+  const [reRender, setReRender] = useState(false);
 
   const handleReRender = () => {
-    setReRender(!reRender)
-  }
+    setReRender(!reRender);
+  };
 
   const handleChange = useCallback((value, newValue) => {
-    setValue(newValue)
-  }, [])
+    setValue(newValue);
+  }, []);
 
-  const token = getToken()
+  const token = getToken();
 
   return (
     <div className="App">
@@ -106,7 +108,7 @@ function App() {
         </Switch>
       </Router>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -1,12 +1,13 @@
-import './PersonalAccount.css'
-import React from 'react'
-import Button from '@mui/material/Button'
-import { signOut, getUser } from '../authentication'
+import './PersonalAccount.css';
+import React from 'react';
+import Button from '@mui/material/Button';
+import { signOut, getUser } from '../authentication';
+import PropTypes from "prop-types";
 
 function PersonalAccount({ onReRender } = () => {}) {
   const handleSignOut = () => {
-    signOut(onReRender)
-  }
+    signOut(onReRender);
+  };
 
   return (
     <div className="PersonalAccount">
@@ -20,7 +21,12 @@ function PersonalAccount({ onReRender } = () => {}) {
         Sign Out
       </Button>
     </div>
-  )
+  );
 }
 
-export default PersonalAccount
+PersonalAccount.propTypes = {
+    onReRender: PropTypes.func
+};
+
+
+export default PersonalAccount;

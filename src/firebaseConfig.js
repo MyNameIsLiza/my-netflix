@@ -7,4 +7,4 @@ export default {
   storageBucket: 'my-netflix-liza.appspot.com',
   messagingSenderId: '466349732554',
   appId: '1:466349732554:web:8a8dd1988610a08d567a33',
-}
+};

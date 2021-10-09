@@ -1,59 +1,61 @@
-import './Movies.css'
-import React, { useState, useEffect, useCallback } from 'react'
-import FavoriteIcon from '@mui/icons-material/Favorite'
-import firebase from 'firebase'
-import { fetchMovies } from '../api'
-import { getUser } from '../authentication'
+import './Movies.css';
+// eslint-disable-next-line no-unused-vars
+import React, { useState, useEffect, useCallback } from 'react';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import firebase from 'firebase';
+import { fetchMovies } from '../api';
+import { getUser } from '../authentication';
+import PropTypes from "prop-types";
 
 function addFavourite(id) {
-  let newId
+  let newId;
   firebase
     .database()
     .ref(`${getUser().uid}/favorites/newId`)
     .on('value', (elem) => {
       if (elem.val()) {
-        newId = elem.val()
+        newId = elem.val();
       } else {
-        newId = 0
+        newId = 0;
       }
-    })
-  let f
+    });
+  let f;
   firebase
     .database()
     .ref(`${getUser().uid}/favorites`)
     .on('value', (elem) => {
-      f = { ...elem.val() }
-    })
-  f[newId] = id
-  f.newId = newId + 1
-  firebase.database().ref(`${getUser().uid}/favorites`).set(f)
+      f = { ...elem.val() };
+    });
+  f[newId] = id;
+  f.newId = newId + 1;
+  firebase.database().ref(`${getUser().uid}/favorites`).set(f);
 }
 
 function removeFavourite(id) {
-  let index = null
-  let favorites
+  let index = null;
+  let favorites;
   firebase
     .database()
     .ref(`${getUser().uid}/favorites`)
     .on('value', (elem) => {
       if (elem.val()) {
-        favorites = elem.val()
-        delete favorites.newId
+        favorites = elem.val();
+        delete favorites.newId;
       }
-    })
+    });
   Object.keys(favorites).forEach((key) => {
     if (+favorites[key] === +id) {
-      index = key
+      index = key;
     }
-  })
+  });
   if (index) {
-    firebase.database().ref(`${getUser().uid}/favorites/${index}`).remove()
+    firebase.database().ref(`${getUser().uid}/favorites/${index}`).remove();
   }
 }
 
-export default function Movies() {
-  const [movies, setMovies] = useState([])
-  const [favorites, setFavorites] = useState([])
+function Movies() {
+  const [movies, setMovies] = useState([]);
+  const [favorites, setFavorites] = useState([]);
 
   useEffect(async () => {
     if (getUser()) {
@@ -62,55 +64,54 @@ export default function Movies() {
         .ref(`${getUser().uid}/favorites`)
         .on('value', (elem) => {
           if (elem.val()) {
-            const f = elem.val()
-            delete f.newId
-            setFavorites(f)
+            const f = elem.val();
+            delete f.newId;
+            setFavorites(f);
           }
-        })
+        });
     }
-    setMovies(await fetchMovies())
-  }, [fetchMovies, setMovies, getUser])
+    setMovies(await fetchMovies());
+  }, [setMovies]);
 
   const searchByName = useCallback(async ({ target }) => {
     if (target.value) {
-      const result = await fetchMovies(target.value)
-      setMovies(result.map((item) => item.show))
+      const result = await fetchMovies(target.value);
+      setMovies(result.map((item) => item.show));
     } else {
-      const result = await fetchMovies()
-      setMovies(result)
+      const result = await fetchMovies();
+      setMovies(result);
     }
-  }, [])
+  }, []);
 
   const filterByGenre = useCallback(async ({ target }) => {
     if (target.value) {
-      const all = await fetchMovies()
+      const all = await fetchMovies();
       const result = all.filter(
-        (item) =>
-          item.genres.filter((genre) => genre.startsWith(target.value))
-            .length !== 0,
-      )
-      setMovies(result)
+        (item) => item.genres.filter((genre) => genre.startsWith(target.value))
+          .length !== 0,
+      );
+      setMovies(result);
     } else {
-      const result = await fetchMovies()
-      setMovies(result)
+      const result = await fetchMovies();
+      setMovies(result);
     }
-  }, [])
+  }, []);
 
   return (
     <div className="Movies">
       <ul className="MoviesUl">
         {movies.length !== 0 ? (
           movies.slice(0, 24).map((item) => {
-            let isFavorite
+            let isFavorite;
             Object.keys(favorites).forEach((key) => {
               if (+favorites[key] === item.id) {
-                isFavorite = true
+                isFavorite = true;
               }
-            })
+            });
             if (isFavorite) {
-              return <Movie className="favorite" key={item.id} {...item} />
+              return <Movie className="favorite" key={item.id} {...item} />;
             }
-            return <Movie key={item.id} {...item} />
+            return <Movie key={item.id} {...item} />;
           })
         ) : (
           <h2>Nothing yet</h2>
@@ -131,20 +132,20 @@ export default function Movies() {
         </div>
       </aside>
     </div>
-  )
+  );
 }
 
 function Movie(props) {
   const favoriteClick = useCallback(({ target }) => {
-    const svg = target.closest('svg')
+    const svg = target.closest('svg');
     if (svg.classList.contains('favorite')) {
-      svg.classList.remove('favorite')
-      removeFavourite(target.closest('li').dataset.id)
+      svg.classList.remove('favorite');
+      removeFavourite(target.closest('li').dataset.id);
     } else {
-      addFavourite(target.closest('li').dataset.id)
-      svg.classList.add('favorite')
+      addFavourite(target.closest('li').dataset.id);
+      svg.classList.add('favorite');
     }
-  }, [])
+  }, []);
 
   return (
     <li className="Movie" data-id={props.id}>
@@ -166,5 +167,14 @@ function Movie(props) {
         />
       )}
     </li>
-  )
+  );
 }
+
+Movie.propTypes = {
+  id: PropTypes.number,
+  name: PropTypes.string,
+  image: PropTypes.object,
+  className: PropTypes.string,
+};
+
+export default Movies;
